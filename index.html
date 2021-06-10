@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Vis Network | Basic usage</title>
+
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"
+    ></script>
+
+    <style type="text/css">
+      #mynetwork {
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="mynetwork"></div>
+
+    <script type="text/javascript">
+      var network;
+      fetch('nodes.json')
+      .then(node_response => node_response.json())
+      .then(nodes_array => {
+        fetch('links.json')
+        .then(link_response => link_response.json())
+        .then(links_array => {
+          var nodes = new vis.DataSet(nodes_array);
+          var edges = new vis.DataSet(links_array);
+          var container = document.getElementById("mynetwork");
+          var data = {
+            nodes: nodes,
+            edges: edges,
+          };
+          var options = {
+            autoResize: true,
+            clickToUse: false,
+            edges: {
+                color: {
+                    color: '#ffffff',
+                },
+                length: 1000
+            },
+            nodes: {
+              shape: 'box',
+              color: {
+                background: '#333333',
+                border: '#333333',
+                highlight: '#333333'
+              },
+              font: {color: 'white'}
+            },
+            physics: {
+                enabled: true
+            },
+          }
+          network = new vis.Network(container, data, options);
+        })
+      })
+    </script>
+  </body>
+</html>
